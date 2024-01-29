@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <style>
+    .calculator {
+      width: 300px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .display {
+      width: 100%;
+      margin-bottom: 10px;
+      padding: 10px;
+      font-size: 20px;
+    }
+
+    .keys {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-gap: 5px; /* Add some gap between buttons */
+    }
+
+    .keys button {
+      padding: 10px;
+      text-align: center;
+      background-color: #333;
+      border: 1px solid #444;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .keys button:hover {
+      background-color: #555;
+    }
+  </style>
+</head>
+<body>
+  <div class="calculator">
+    <input id="display" class="display" type="text" readonly>
+    <div class="keys">
+      <button onclick="clearDisplay()">C</button>
+      <button onclick="removeLast()">←</button>
+      <button onclick="toggleScientificMode()">Scientific</button>
+      <button onclick="toggleShiftMode()">Shift</button>
+      <button onclick="addToDisplay('%')">%</button>
+      <button onclick="addToDisplay('7')">7</button>
+      <button onclick="addToDisplay('8')">8</button>
+      <button onclick="addToDisplay('9')">9</button>
+      <button onclick="addToDisplay('+')">+</button>
+      <button onclick="addToDisplay('4')">4</button>
+      <button onclick="addToDisplay('5')">5</button>
+      <button onclick="addToDisplay('6')">6</button>
+      <button onclick="addToDisplay('-')">-</button>
+      <button onclick="addToDisplay('1')">1</button>
+      <button onclick="addToDisplay('2')">2</button>
+      <button onclick="addToDisplay('3')">3</button>
+      <button onclick="addToDisplay('*')">*</button>
+      <button onclick="addToDisplay('0')">0</button>
+      <button onclick="addToDisplay('.')">.</button>
+      <button onclick="calculate()">=</button>
+      <button onclick="addToDisplay('/')">/</button>
+      <button onclick="addToDisplay('log(')">log</button>
+    </div>
+  </div>
+
+  <script>
+    let scientificMode = false;
+    let shiftMode = false;
+
+    function addToDisplay(value) {
+      document.getElementById('display').value += value;
+    }
+
+    function calculate() {
+      try {
+        display.value = eval(display.value);
+      } catch (error) {
+        display.value = 'Error';
+      }
+    }
+
+    function clearDisplay() {
+      display.value = '';
+    }
+
+    function removeLast() {
+      display.value = display.value.slice(0, -1);
+    }
+
+    function toggleScientificMode() {
+      scientificMode = !scientificMode;
+      // Add or remove scientific keys based on the mode
+      const scientificKeys = ['sin(', 'cos(', 'tan(', 'sqrt(', '^', 'pi'];
+      if (scientificMode) {
+        scientificKeys.forEach(key => {
+          const btn = document.createElement('button');
+          btn.textContent = key;
+          btn.onclick = () => addToDisplay(key);
+          document.querySelector('.keys').appendChild(btn);
+        });
+      } else {
+        // Remove scientific keys
+        const scientificBtns = document.querySelectorAll('.keys button');
+        scientificBtns.forEach(btn => {
+          if (scientificKeys.includes(btn.textContent)) {
+            btn.remove();
+          }
+        });
+      }
+    }
+
+    function toggleShiftMode() {
+      shiftMode = !shiftMode;
+      const shiftKeys = ['sin⁻¹(', 'cos⁻¹(', 'tan⁻¹(', 'log(', 'ln(', 'e^('];
+      if (shiftMode) {
+        shiftKeys.forEach(key => {
+          const btn = document.createElement('button');
+          btn.textContent = key;
+          btn.onclick = () => addToDisplay(key);
+          document.querySelector('.keys').appendChild(btn);
+        });
+      } else {
+        // Remove shift keys
+        const shiftBtns = document.querySelectorAll('.keys button');
+        shiftBtns.forEach(btn => {
+          if (shiftKeys.includes(btn.textContent)) {
+            btn.remove();
+          }
+        });
+      }
+    }
+  </script>
+</body>
+</html>
